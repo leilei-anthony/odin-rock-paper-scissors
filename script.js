@@ -20,17 +20,21 @@ function getComputerChoice() {
 
 function playRound(humanChoice, computerChoice) {
     let text = ""
+    let winner = 0
     switch(humanChoice) {
         case "rock":
             switch(computerChoice) {
                 case "rock":
                     text = "It's a tie!"
+                    winner = 0
                     break
                 case "paper":
                     text = "You lose! Paper beats Rock."
+                    winner = -1
                     break
                 case "scissors":
                     text = "You win! Rock beats Scissors."
+                    winner = 1
                     break
             }
             break
@@ -38,12 +42,15 @@ function playRound(humanChoice, computerChoice) {
             switch(computerChoice) {
                 case "rock":
                     text = "You win! Paper beats Rock."
+                    winner = 1
                     break
                 case "paper":
                     text = "It's a tie!"
+                    winner = 0
                     break
                 case "scissors":
                     text = "You lose! Scissors beats Paper."
+                    winner = -1
                     break
             }
             break
@@ -51,25 +58,55 @@ function playRound(humanChoice, computerChoice) {
             switch(computerChoice) {
                 case "rock":
                     text = "You lose! Rock beats Scissors."
+                    winner = -1
                     break
                 case "paper":
                     text = "You win! Scissors beats Paper."
+                    winner = 1
                     break
                 case "scissors":
                     text = "It's a tie!"
+                    winner = 0
                     break
             }
             break
     }
 
     console.log(text)
+    return winner
 }
 
-function playGame() {
+function playGame(rounds) {
     let humanScore = 0
     let computerScore = 0
-}
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
 
-playRound(humanSelection, computerSelection)
+    for(let i = 0; i < rounds; i++) {
+        const humanSelection = getHumanChoice();
+        const computerSelection = getComputerChoice();
+
+        let winner = playRound(humanSelection, computerSelection)
+
+        switch(winner) {
+            case -1:
+                computerScore++
+                break
+            case 0:
+                break
+            case 1:
+                humanScore++
+                break
+        }
+    }
+
+    if(humanScore > computerScore) {
+        text = "You won!\nYour Score: " + humanScore + "\nComputerScore: " + computerScore
+    } else if(humanScore < computerScore) {
+        text = "You lost!\nYour Score: " + humanScore + "\nComputerScore: " + computerScore
+    } else if(humanScore == computerScore) {
+        text = "It's a Tie!\nYour Score: " + humanScore + "\nComputerScore: " + computerScore
+    }
+
+    console.log(text)
+}
+
+playGame(5)
